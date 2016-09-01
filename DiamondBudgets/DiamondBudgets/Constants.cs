@@ -12,21 +12,21 @@ namespace DiamondBudgets
         {
             get
             {
-                return Color.FromHex("2196F3"); // Primary Color
+                return Color.FromHex("FFFFFF"); // Primary Color
             }
         }
         public static Color DarkPrimaryColor
         {
             get
             {
-                return Color.FromHex("1976D2"); // Dark Primary Color
+                return Color.FromHex("F7941D"); // Dark Primary Color
             }
         }
         public static Color LightPrimaryColor
         {
             get
             {
-                return Color.FromHex("BBDEFB"); // Light Primary Color
+                return Color.FromHex("FF961E"); // Light Primary Color
             }
         }
         public static Color AccentColor
@@ -40,7 +40,7 @@ namespace DiamondBudgets
         {
             get
             {
-                return Color.FromHex("212121"); // Primary Text Color
+                return Color.FromHex("414143"); // Primary Text Color
             }
         }
         public static Color SecondaryTextColor

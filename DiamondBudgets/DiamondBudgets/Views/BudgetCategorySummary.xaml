@@ -10,7 +10,7 @@
                 iOS="0,20,0,0" />
   </ContentPage.Padding>
 
-  <Grid BackgroundColor="{x:Static local:Constants.LightPrimaryColor}"
+  <Grid BackgroundColor="{x:Static local:Constants.PrimaryColor}"
         Padding="10,10,10,10">
     <oxy:PlotView x:Name="pieChart" Model="{Binding Model}" VerticalOptions="Center" HorizontalOptions="Center" />
   </Grid>

@@ -14,7 +14,7 @@
   <ContentPage.Resources>
     <ResourceDictionary>
       <Style TargetType="Label">
-        <Setter Property="TextColor" Value="{x:Static local:Constants.LightTextColor}" />
+        <Setter Property="TextColor" Value="{x:Static local:Constants.DarkTextColor}" />
       </Style>
     </ResourceDictionary>
   </ContentPage.Resources>
