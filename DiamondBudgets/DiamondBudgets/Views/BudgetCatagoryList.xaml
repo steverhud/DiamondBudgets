@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DiamondBudgets"
+             x:Class="DiamondBudgets.BudgetCatagoryList"
+             Title="Budget - By Department"
+             BackgroundColor="{x:Static local:Constants.PrimaryColor}">
+
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness"
+                iOS="0,20,0,0" />
+  </ContentPage.Padding>
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{x:Static local:Constants.DarkTextColor}" />
+        <Setter Property="FontSize" Value="Large" />
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    
+    <ActivityIndicator Grid.RowSpan="1"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="False"
+                       IsEnabled="True"
+                       x:Name="syncIndicator"/>
+
+    <AbsoluteLayout x:Name ="DepartmentAL" />
+    
+    <!--<ListView x:Name="categoryList"
+				ItemSelected="OnSelected"
+				IsPullToRefreshEnabled="true" Refreshing="OnRefresh"
+				Grid.Row="0">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <ViewCell>
+            <ViewCell.ContextActions>
+              --><!--<MenuItem Clicked="OnComplete" Text="Complete" CommandParameter="{Binding .}"/>--><!--
+            </ViewCell.ContextActions>
+            <StackLayout Orientation="Horizontal">
+              <Label Text="{Binding Category}"
+                     FontAttributes="Bold"/>
+              <Label Text="{Binding Amount, StringFormat='{0:F2}%'}"
+                     HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>-->
+  </Grid>
+</ContentPage>

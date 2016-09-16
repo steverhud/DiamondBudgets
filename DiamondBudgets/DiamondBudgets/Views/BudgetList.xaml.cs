@@ -54,7 +54,7 @@ namespace DiamondBudgets
         {
             using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
             {
-                budgetList.ItemsSource = await manager.GetBudgetItemsAsync(syncItems);
+                budgetList.ItemsSource = await manager.GetBudgetItemsAsync(syncItems, "Budget");
             }
         }
         private class ActivityIndicatorScope : IDisposable

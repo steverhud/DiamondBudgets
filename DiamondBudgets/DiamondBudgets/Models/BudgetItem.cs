@@ -6,14 +6,17 @@ namespace DiamondBudgets
 {
     public class BudgetItem
     {
+
         string id;
+        string tenantID;
+        string entityType;
         string account;
         string description;
         decimal amount;
         string budgetId;
         string category;
-        int year;
-        int period;
+        int budgetYear;
+        int budgetPeriod;
 
         [JsonProperty(PropertyName = "id")]
         public string Id
@@ -22,53 +25,67 @@ namespace DiamondBudgets
             set { id = value; }
         }
 
-        [JsonProperty(PropertyName = "account")]
+        [JsonProperty(PropertyName = "TenantID")]
+        public string TenantID
+        {
+            get { return tenantID; }
+            set { tenantID = value; }
+        }
+
+        [JsonProperty(PropertyName = "EntityType")]
+        public string EntityType
+        {
+            get { return entityType; }
+            set { entityType = value; }
+        }
+
+        [JsonProperty(PropertyName = "Account")]
         public string Account
         {
             get { return account; }
             set { account = value; }
         }
 
-        [JsonProperty(PropertyName = "description")]
+        [JsonProperty(PropertyName = "Description")]
         public string Description
         {
             get { return description; }
             set { description = value; }
         }
 
-        [JsonProperty(PropertyName = "amount")]
+        [JsonProperty(PropertyName = "Amount")]
         public decimal Amount
         {
             get { return amount; }
             set { amount = value; }
         }
 
-        [JsonProperty(PropertyName = "budgetId")]
+        [JsonProperty(PropertyName = "BudgetId")]
         public string BudgetId
         {
             get { return budgetId; }
             set { budgetId = value; }
         }
 
-        [JsonProperty(PropertyName = "category")]
+        [JsonProperty(PropertyName = "Category")]
         public string Category
         {
             get { return category; }
             set { category = value; }
         }
 
-        [JsonProperty(PropertyName = "year")]
-        public int Year
+        [JsonProperty(PropertyName = "BudgetYear")]
+        public int BudgetYear
         {
-            get { return year; }
-            set { year = value; }
+            get { return budgetYear; }
+            set { budgetYear = value; }
         }
 
-        [JsonProperty(PropertyName = "period")]
-        public int Period
+        [JsonProperty(PropertyName = "BudgetPeriod")]
+        public int BudgetPeriod
         {
-            get { return period; }
-            set { period = value; }
+            get { return budgetPeriod; }
+            set { budgetPeriod = value; }
         }
 
         [Version]

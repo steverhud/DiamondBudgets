@@ -34,7 +34,7 @@ namespace DiamondBudgets
             base.OnAppearing();
 
             // Set syncItems to true in order to synchronize the data on startup when running in offline mode
-            await RefreshItems(true, syncItems: false);
+            await RefreshItems(true, syncItems: true);
         }
 
         // Data methods
@@ -80,6 +80,13 @@ namespace DiamondBudgets
                     }
                 }
             }
+
+            //if (todo != null)
+            //{
+            //    var detailsView = new TodoItemDetailsView(todo, manager);
+            //    await detailsView.LoadImagesAsync();
+            //    await Navigation.PushAsync(detailsView);
+            //}
 
             // prevents background getting highlighted
             todoList.SelectedItem = null;

@@ -12,6 +12,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
+using Microsoft.WindowsAzure.MobileServices.Files;
+using Microsoft.WindowsAzure.MobileServices.Files.Sync;
+using Microsoft.WindowsAzure.MobileServices.Eventing;
+using System.IO;
+using Xamarin.Forms;
 
 #if OFFLINE_SYNC_ENABLED
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
@@ -33,17 +38,27 @@ namespace DiamondBudgets
 
         private TodoItemManager()
         {
-            this.client = new MobileServiceClient(
-                Constants.ApplicationURL);
+            this.client = new MobileServiceClient(Constants.ApplicationURL);
 
 #if OFFLINE_SYNC_ENABLED
-            var store = new MobileServiceSQLiteStore("localstore.db");
-            store.DefineTable<TodoItem>();
+            try
+            {
+                var store = new MobileServiceSQLiteStore("localstore.db");
+                store.DefineTable<TodoItem>();
 
-            //Initializes the SyncContext using the default IMobileServiceSyncHandler.
-            this.client.SyncContext.InitializeAsync(store);
+                // Initialize file sync
+                this.client.InitializeFileSyncContext(new TodoItemFileSyncHandler(this), store);
 
-            this.todoTable = client.GetSyncTable<TodoItem>();
+                //Initializes the SyncContext using the default IMobileServiceSyncHandler.
+                //this.client.SyncContext.InitializeAsync(store);
+                this.client.SyncContext.InitializeAsync(store, StoreTrackingOptions.NotifyLocalAndServerOperations);
+
+                this.todoTable = client.GetSyncTable<TodoItem>();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.InnerException);
+            }
 #else
             this.todoTable = client.GetTable<TodoItem>();
 #endif
@@ -110,6 +125,31 @@ namespace DiamondBudgets
             }
         }
 
+        //internal async Task DownloadFileAsync(MobileServiceFile file)
+        //{
+        //    var todoItem = await todoTable.LookupAsync(file.ParentId);
+        //    IPlatform platform = DependencyService.Get<IPlatform>();
+
+        //    string filePath = await FileHelper.GetLocalFilePathAsync(file.ParentId, file.Name);
+        //    await platform.DownloadFileAsync(this.todoTable, file, filePath);
+        //}
+
+        //internal async Task<MobileServiceFile> AddImage(TodoItem todoItem, string imagePath)
+        //{
+        //    string targetPath = await FileHelper.CopyTodoItemFileAsync(todoItem.Id, imagePath);
+        //    return await this.todoTable.AddFileAsync(todoItem, Path.GetFileName(targetPath));
+        //}
+
+        //internal async Task DeleteImage(TodoItem todoItem, MobileServiceFile file)
+        //{
+        //    await this.todoTable.DeleteFileAsync(file);
+        //}
+
+        //internal async Task<IEnumerable<MobileServiceFile>> GetImageFilesAsync(TodoItem todoItem)
+        //{
+        //    return await this.todoTable.GetFilesAsync(todoItem);
+        //}
+
 #if OFFLINE_SYNC_ENABLED
         public async Task SyncAsync()
         {
@@ -118,6 +158,8 @@ namespace DiamondBudgets
             try
             {
                 await this.client.SyncContext.PushAsync();
+
+                await this.todoTable.PushFileChangesAsync();
 
                 await this.todoTable.PullAsync(
                     //The first parameter is a query name that is used internally by the client SDK to implement incremental sync.

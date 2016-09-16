@@ -65,7 +65,7 @@ namespace DiamondBudgets
             get { return budgetTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<BudgetItem>; }
         }
 
-        public async Task<ObservableCollection<BudgetItem>> GetBudgetItemsAsync(bool syncItems = false)
+        public async Task<ObservableCollection<BudgetItem>> GetBudgetItemsAsync(bool syncItems = false, string entityType = "Budget")
         {
             try
             {
@@ -76,7 +76,7 @@ namespace DiamondBudgets
                 }
 #endif
                 IEnumerable<BudgetItem> items = await budgetTable
-//                    .Where(budgetItem => budgetItem.Account != null)
+                    .Where(budgetItem => budgetItem.EntityType == entityType)
                     .ToEnumerableAsync();
 
                 return new ObservableCollection<BudgetItem>(items);

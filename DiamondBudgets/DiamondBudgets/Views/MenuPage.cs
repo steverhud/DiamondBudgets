@@ -28,7 +28,8 @@ namespace DiamondBudgets
             var section = new TableSection()
             {
                 new MenuCell {Text = "Budget List", Host = this },
-                new MenuCell {Text = "Budget Summary - by Category", Host = this },
+                new MenuCell {Text = "Budget List - by Department" , Host = this},
+                new MenuCell {Text = "Budget Summary - by Department", Host = this },
                 new MenuCell {Text = "Settings", Host = this },
             };
 
@@ -48,7 +49,7 @@ namespace DiamondBudgets
             };
         }
 
-        NavigationPage budgetList, settings, budgetChart;
+        NavigationPage budgetList, settings, budgetChart, departmentList;
         public void Selected(string item)
         {
             switch(item)
@@ -60,6 +61,15 @@ namespace DiamondBudgets
                             BarBackgroundColor = Constants.DarkPrimaryColor
                         };
                     master.Detail = budgetList;
+                    break;
+
+                case "Budget List - by Department":
+                    if (departmentList == null)
+                        departmentList = new NavigationPage(new BudgetCatagoryList())
+                        {
+                            BarBackgroundColor = Constants.DarkPrimaryColor
+                        };
+                    master.Detail = departmentList;
                     break;
 
                 case "Budget Summary - by Category":

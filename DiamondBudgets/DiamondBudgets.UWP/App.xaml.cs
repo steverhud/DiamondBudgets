@@ -78,6 +78,7 @@ namespace DiamondBudgets.UWP
             }
             // Ensure the current window is active
             Window.Current.Activate();
+            DiamondBudgets.App.ScreenWidth = Window.Current.Bounds.Width;
         }
 
         /// <summary>

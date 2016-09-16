@@ -31,6 +31,7 @@
                        IsEnabled="True"
                        x:Name="syncIndicator"/>
 
+
     <ListView x:Name="budgetList"
 				ItemSelected="OnSelected"
 				IsPullToRefreshEnabled="true" Refreshing="OnRefresh"
@@ -47,12 +48,17 @@
                            HorizontalOptions="StartAndExpand">
 
                 <Label Text="{Binding Description}"
-                       FontAttributes="Bold"/>
+                       FontAttributes="Bold"
+                       AnchorX=""
+                       />
                 <Label Text="{Binding Account}"
-                       FontSize="Micro"/>
+                       FontSize="Small"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Center"
+                       />
               </StackLayout>
               <Label Text="{Binding Amount, StringFormat='{0:C2}'}"
-                     HorizontalOptions="End"/>
+                     HorizontalOptions="EndAndExpand"/>
             </StackLayout>
           </ViewCell>
         </DataTemplate>

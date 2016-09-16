@@ -6,12 +6,13 @@ namespace DiamondBudgets
 {
     public class BudgetCategory
     {
+
         string id;
+        string tenantID;
+        string entityType;
         decimal amount;
-        string budgetId;
         string category;
-        int year;
-        int period;
+        int budgetYear;
 
         [JsonProperty(PropertyName = "id")]
         public string Id
@@ -20,18 +21,25 @@ namespace DiamondBudgets
             set { id = value; }
         }
 
-        [JsonProperty(PropertyName = "amount")]
+        [JsonProperty(PropertyName = "TenantID")]
+        public string TenantID
+        {
+            get { return tenantID; }
+            set { tenantID = value; }
+        }
+
+        [JsonProperty(PropertyName = "EntityType")]
+        public string EntityType
+        {
+            get { return entityType; }
+            set { entityType = value; }
+        }
+
+        [JsonProperty(PropertyName = "Amount")]
         public decimal Amount
         {
             get { return amount; }
             set { amount = value; }
-        }
-
-        [JsonProperty(PropertyName = "budgetId")]
-        public string BudgetId
-        {
-            get { return budgetId; }
-            set { budgetId = value; }
         }
 
         [JsonProperty(PropertyName = "category")]
@@ -41,18 +49,11 @@ namespace DiamondBudgets
             set { category = value; }
         }
 
-        [JsonProperty(PropertyName = "year")]
-        public int Year
+        [JsonProperty(PropertyName = "BudgetYear")]
+        public int BudgetYear
         {
-            get { return year; }
-            set { year = value; }
-        }
-
-        [JsonProperty(PropertyName = "period")]
-        public int Period
-        {
-            get { return period; }
-            set { period = value; }
+            get { return budgetYear; }
+            set { budgetYear = value; }
         }
 
         [Version]
