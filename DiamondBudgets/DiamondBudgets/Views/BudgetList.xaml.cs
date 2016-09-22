@@ -11,6 +11,7 @@ namespace DiamondBudgets
     public partial class BudgetList : ContentPage
     {
         BudgetItemManager manager;
+        public string category { get; set; }
 
         public BudgetList()
         {
@@ -24,8 +25,19 @@ namespace DiamondBudgets
         {
             base.OnAppearing();
 
-            // Set syncItems to true in order to synchronize the data on startup when running in offline mode
-            await RefreshItems(true, syncItems: false);
+            try
+            {
+                // Set syncItems to true in order to synchronize the data on startup when running in offline mode
+                await RefreshItems(true, syncItems: false);
+            }
+            catch (FormatException e)
+            {
+                await DisplayAlert("OnAppearing Error", e.Message + " --- " + e.InnerException, "OK");
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("OnAppearing Error", e.Message + " --- " + e.InnerException, "OK");
+            }
         }
 
         public async void OnRefresh(object sender, EventArgs e)
@@ -52,9 +64,16 @@ namespace DiamondBudgets
         }
         private async Task RefreshItems(bool showActivityIndicator, bool syncItems)
         {
-            using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
+            try
             {
-                budgetList.ItemsSource = await manager.GetBudgetItemsAsync(syncItems, "Budget");
+                using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
+                {
+                    budgetList.ItemsSource = await manager.GetBudgetItemsAsync(syncItems, "Budget", category);
+                }
+            }
+            catch (Exception e)
+            {
+                await DisplayAlert("RefreshItems Error", e.Message + " --- " + e.InnerException, "OK");
             }
         }
         private class ActivityIndicatorScope : IDisposable

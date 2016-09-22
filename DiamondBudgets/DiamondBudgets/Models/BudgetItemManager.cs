@@ -27,8 +27,7 @@ namespace DiamondBudgets
 
         private BudgetItemManager()
         {
-            this.client = new MobileServiceClient(
-                Constants.ApplicationURL);
+            this.client = new MobileServiceClient(Constants.ApplicationURL);
 
 #if OFFLINE_SYNC_ENABLED
             var store = new MobileServiceSQLiteStore("localstore.db");
@@ -65,7 +64,8 @@ namespace DiamondBudgets
             get { return budgetTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<BudgetItem>; }
         }
 
-        public async Task<ObservableCollection<BudgetItem>> GetBudgetItemsAsync(bool syncItems = false, string entityType = "Budget")
+        public async Task<ObservableCollection<BudgetItem>> GetBudgetItemsAsync(bool syncItems = false, string entityType = "Budget",
+            string category = "")
         {
             try
             {
@@ -75,9 +75,20 @@ namespace DiamondBudgets
                     await this.SyncAsync();
                 }
 #endif
-                IEnumerable<BudgetItem> items = await budgetTable
-                    .Where(budgetItem => budgetItem.EntityType == entityType)
-                    .ToEnumerableAsync();
+                IEnumerable<BudgetItem> items;
+
+                if (category != "" && category != null)
+                {
+                    items = await budgetTable
+                        .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category == category)
+                        .ToEnumerableAsync();
+                }
+                else
+                {
+                    items = await budgetTable
+                        .Where(budgetItem => budgetItem.EntityType == entityType)
+                        .ToEnumerableAsync();
+                }
 
                 return new ObservableCollection<BudgetItem>(items);
             }

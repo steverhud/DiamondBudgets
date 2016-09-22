@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,9 @@ namespace DiamondBudgets
     public partial class BudgetCatagoryList : ContentPage
     {
         BudgetCategoryManager manager;
+
+        public MasterDetailPage master { get; set; }
+
 
         public BudgetCatagoryList()
         {
@@ -55,14 +59,13 @@ namespace DiamondBudgets
             {
                 IEnumerable<BudgetCategory> budgets = await manager.GetBudgeCategorysAsync(entityType: "Budget");
                 IEnumerable<BudgetCategory> actuals = await manager.GetBudgeCategorysAsync(entityType: "Actual");
-                //List<BudgetCategory> budgetList = new List<BudgetCategory>(actuals);
 
                 foreach(BudgetCategory bc in budgets)
                 {
                     BudgetCategory actual = actuals.FirstOrDefault(x => x.Category == bc.Category);
                     if (actual != null)
                     {
-                        bc.Amount = (actual.Amount / bc.Amount) * 100;
+                        bc.Amount = (actual.Amount / (bc.Amount/12*9)) * 100;
                         if (bc.Amount < 0)
                             bc.Amount = bc.Amount * -1;
                     }
@@ -70,18 +73,21 @@ namespace DiamondBudgets
                         bc.Amount = 0;
                 }
 
-                //categoryList.ItemsSource = budgets.OrderByDescending(s => s.Amount);
-
-                //DepartmentAL.Children.Add(new Label { Text = "Hello" });
-                var i = 0;
-                //foreach(BudgetCategory budget in budgets.OrderByDescending(s => s.Amount))
+                List<PercentageBarValue> PercentageBars = new List<PercentageBarValue>();
                 foreach(BudgetCategory budget in budgets)
                 {
-                    AddBar(Math.Round((budget.Amount/100),2), i, budget.Category);
-                    i++;
-                    //if (i == 10)
-                    //    break;
+                    PercentageBars.Add(new PercentageBarValue
+                    {
+                        BarLabel = budget.Category,
+                        Percentage = Math.Round((budget.Amount / 100), 2)
+                    });
                 }
+
+                DataTemplate dt = new DataTemplate(typeof(PercentageBar));
+                //categoryList.ItemsSource = PercentageBars;
+                categoryList.ItemsSource = new ObservableCollection<PercentageBarValue>(PercentageBars);
+                categoryList.ItemTemplate = dt;
+                categoryList.SeparatorVisibility = SeparatorVisibility.None;
             }
         }
         private class ActivityIndicatorScope : IDisposable
@@ -122,104 +128,36 @@ namespace DiamondBudgets
         }
         public async void OnSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var todo = e.SelectedItem as TodoItem;
-            if (Device.OS != TargetPlatform.iOS && todo != null)
-            {
-                // Not iOS - the swipe-to-delete is discoverable there
-                if (Device.OS == TargetPlatform.Android)
-                {
-                    await DisplayAlert(todo.Name, "Press-and-hold to complete task " + todo.Name, "Got it!");
-                }
-                else
-                {
-                    // Windows, not all platforms support the Context Actions yet
-                    if (await DisplayAlert("Mark completed?", "Do you wish to complete " + todo.Name + "?", "Complete", "Cancel"))
-                    {
-                        //await CompleteItem(todo);
-                    }
-                }
-            }
+            var item = e.SelectedItem as PercentageBarValue;
+            //if (Device.OS != TargetPlatform.iOS && item != null)
+            //{
+            //    // Not iOS - the swipe-to-delete is discoverable there
+            //    if (Device.OS == TargetPlatform.Android)
+            //    {
+            //        await DisplayAlert(item.BarLabel, "Press-and-hold to complete task " + item.BarLabel, "Got it!");
+            //    }
+
+            //    await DisplayAlert(item.BarLabel, item.BarLabel, "Go");
+
+            //}
+
+            NavigationPage budgetList = new NavigationPage(new BudgetList() { category = item.BarLabel }) { BarBackgroundColor = Constants.DarkPrimaryColor};
+            master.Detail = budgetList;
+            //await DisplayAlert(item.BarLabel, item.BarLabel, "Done");
 
             // prevents background getting highlighted
             //categoryList.SelectedItem = null;
         }
 
-        private void AddBar(decimal percentage, Int32 position, string barLabel)
+        public void Selected(string Category)
         {
-            Image image;
-            StackLayout stackLayout;
-            Label label;
-            ContentView contentView;
-            double layoutPostition = position * .095;
-
-            image = new Image { HorizontalOptions = LayoutOptions.Start };
-            image.Source = MakeImage(percentage);
-            stackLayout = new StackLayout();
-            stackLayout.Children.Add(image);
-            DepartmentAL.Children.Add(stackLayout, new Rectangle(0, layoutPostition, 1, 0.08), AbsoluteLayoutFlags.All);
-            stackLayout = null;
-            image = null;
-
-            label = new Label
-            {
-                HorizontalOptions = LayoutOptions.Start,
-                Text = barLabel,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Constants.DarkTextColor,
-            };
-            contentView = new ContentView { Content = label };
-            DepartmentAL.Children.Add(contentView, new Rectangle(0, layoutPostition + 0.025, 1, 0.08), AbsoluteLayoutFlags.All);
-            contentView = null;
-            label = null;
-
-            string strPercent = string.Format("{0:#,#.##}", (percentage * 100)) + "%";
-            label = new Label
-            {
-                HorizontalOptions = LayoutOptions.End,
-                Text = strPercent,
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                TextColor = Constants.DarkTextColor,
-            };
-            contentView = new ContentView { Content = label };
-            DepartmentAL.Children.Add(contentView, new Rectangle(0, layoutPostition + 0.025, 1, 0.08), AbsoluteLayoutFlags.All);
-            contentView = null;
-            label = null;
 
         }
 
-        private ImageSource MakeImage(decimal percentage)
-        {
-
-            //double width = App.ScreenWidth * 2;
-            decimal width = Convert.ToDecimal(App.ScreenWidth);
-
-            if (percentage > 1)
-                percentage = 1;
-
-            int rows = 128;
-            int cols = 64;
-            int red = 0;
-            int green = 255;
-
-            cols = Convert.ToInt32(width * percentage);
-            int greenThreshold = Convert.ToInt32(Math.Round(cols * .85, 0));
-
-            BmpMaker bmpMaker = new BmpMaker(cols, rows);
-
-            for (int col = 0; col < cols; col++)
-            {
-                for (int row = 0; row < rows; row++)
-                {
-                    bmpMaker.SetPixel(row, col, red, green, 0);
-                }
-
-                red = Convert.ToInt32((col / width) * 255);
-                //if (col > greenThreshold)
-                    green = 255 - red;
-            }
-            ImageSource imageSource = bmpMaker.Generate();
-            return imageSource;
-        }
-
+    }
+    public class PercentageBarValue
+    {
+        public string BarLabel { get; set; }
+        public decimal Percentage { get; set; }
     }
 }

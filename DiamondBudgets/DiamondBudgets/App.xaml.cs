@@ -19,9 +19,9 @@ namespace DiamondBudgets
             userAppSettings.RestoreState(Current.Properties);
 
             var md = new MasterDetailPage();
-
+            md.BackgroundColor = Constants.DarkPrimaryColor;
             md.Master = new MenuPage(md, userAppSettings);
-            md.Detail = new NavigationPage(new BudgetCatagoryList()) { BarBackgroundColor = Constants.DarkPrimaryColor };
+            md.Detail = new NavigationPage(new BudgetCatagoryList() {master = md}) { BarBackgroundColor = Constants.DarkPrimaryColor };
 
             MainPage = md;
         }
@@ -44,6 +44,8 @@ namespace DiamondBudgets
         public static object UIContext { get; set; }
 
         public static double ScreenWidth { get; set; }
+
+        public static Size ScreenSize { get; set; }
 
     }
 }

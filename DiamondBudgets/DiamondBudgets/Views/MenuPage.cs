@@ -24,6 +24,7 @@ namespace DiamondBudgets
 
             Title = "Diamond Budget App";
             Icon = "slideout.png";
+            
 
             var section = new TableSection()
             {
@@ -43,7 +44,7 @@ namespace DiamondBudgets
 
             Content = new StackLayout
             {
-                BackgroundColor = Constants.PrimaryColor,
+                BackgroundColor = Constants.DarkPrimaryColor,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 Children = {tableView}
             };
@@ -65,7 +66,7 @@ namespace DiamondBudgets
 
                 case "Budget List - by Department":
                     if (departmentList == null)
-                        departmentList = new NavigationPage(new BudgetCatagoryList())
+                        departmentList = new NavigationPage(new BudgetCatagoryList() { master = master})
                         {
                             BarBackgroundColor = Constants.DarkPrimaryColor
                         };

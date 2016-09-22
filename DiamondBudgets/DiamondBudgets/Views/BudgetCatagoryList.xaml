@@ -32,13 +32,13 @@
                        IsEnabled="True"
                        x:Name="syncIndicator"/>
 
-    <AbsoluteLayout x:Name ="DepartmentAL" />
+    <!--<AbsoluteLayout x:Name ="DepartmentAL" />-->
     
-    <!--<ListView x:Name="categoryList"
+    <ListView x:Name="categoryList"
 				ItemSelected="OnSelected"
 				IsPullToRefreshEnabled="true" Refreshing="OnRefresh"
-				Grid.Row="0">
-      <ListView.ItemTemplate>
+				Grid.Row="0"/>
+      <!--<ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell>
             <ViewCell.ContextActions>

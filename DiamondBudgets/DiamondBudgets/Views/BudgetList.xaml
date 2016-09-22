@@ -33,9 +33,11 @@
 
 
     <ListView x:Name="budgetList"
-				ItemSelected="OnSelected"
-				IsPullToRefreshEnabled="true" Refreshing="OnRefresh"
-				Grid.Row="0">
+              ItemSelected="OnSelected"
+              IsPullToRefreshEnabled="true" 
+              Refreshing="OnRefresh"
+              Grid.Row="0"
+              SeparatorVisibility="None">
       <ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell>
@@ -49,16 +51,21 @@
 
                 <Label Text="{Binding Description}"
                        FontAttributes="Bold"
-                       AnchorX=""
+                       FontSize="Small"
+                       VerticalTextAlignment="Start"
                        />
                 <Label Text="{Binding Account}"
-                       FontSize="Small"
+                       FontSize="Micro"
                        HorizontalTextAlignment="Start"
-                       VerticalTextAlignment="Center"
+                       VerticalTextAlignment="End"
                        />
               </StackLayout>
               <Label Text="{Binding Amount, StringFormat='{0:C2}'}"
-                     HorizontalOptions="EndAndExpand"/>
+                     WidthRequest="200"
+                     FontSize="Small"
+                     HorizontalOptions="EndAndExpand"
+                     HorizontalTextAlignment="End"
+                     VerticalTextAlignment="Center"/>
             </StackLayout>
           </ViewCell>
         </DataTemplate>
