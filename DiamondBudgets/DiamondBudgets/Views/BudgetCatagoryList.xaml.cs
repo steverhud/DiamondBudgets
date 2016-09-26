@@ -77,10 +77,12 @@ namespace DiamondBudgets
                 List<PercentageBarValue> PercentageBars = new List<PercentageBarValue>();
                 foreach(BudgetCategory budget in budgets)
                 {
+                    decimal newPercentage = Math.Round((budget.Amount / 100), 2);
                     PercentageBars.Add(new PercentageBarValue
                     {
                         BarLabel = budget.Category,
-                        Percentage = Math.Round((budget.Amount / 100), 2)
+                        Percentage = newPercentage,
+                        Image = MakeImage(newPercentage)
                     });
                 }
 
@@ -134,10 +136,48 @@ namespace DiamondBudgets
             master.Detail = budgetList;
         }
 
+        public ImageSource MakeImage(decimal percentage)
+        {
+
+            //double width = App.ScreenWidth * 2;
+            decimal width = Convert.ToDecimal(App.ScreenWidth);
+
+            if (percentage > 1)
+                percentage = 1;
+
+            int rows = 128;
+            int cols = 64;
+            int red = 0;
+            //int green = 255;
+            int green = 256;
+
+            cols = Convert.ToInt32(Math.Round((decimal)width * percentage, 0));
+
+            BmpMaker bmpMaker = new BmpMaker(cols, rows);
+
+            for (int col = 0; col < cols; col++)
+            {
+                for (int row = 0; row < rows; row++)
+                {
+                    bmpMaker.SetPixel(row, col, red, green, 0);
+                }
+
+                red = (Convert.ToInt32(((double)col / (double)width) * 128)) * 2 - 1;
+                //green = 256 - red;
+                //green = 2 * (128 - Convert.ToInt32((col / width) * 128));
+                double greenAlter = Math.Sin((1 - (double)col / (double)width) * Math.PI / 2) * 255;
+                green = Convert.ToInt32(greenAlter);
+            }
+            ImageSource imageSource = bmpMaker.Generate();
+            return imageSource;
+        }
+
+
     }
     public class PercentageBarValue
     {
         public string BarLabel { get; set; }
         public decimal Percentage { get; set; }
+        public ImageSource Image { get; set; }
     }
 }

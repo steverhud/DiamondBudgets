@@ -60,6 +60,7 @@ namespace DiamondBudgets
 
             barLabel.SetBinding(Label.TextProperty, "BarLabel");
             barAmount.SetBinding(Label.TextProperty, "Percentage");
+            myImage.SetBinding(Image.SourceProperty, "Image");
 
             layout.Children.Add(myImage,
                 Constraint.Constant(0),
@@ -111,7 +112,7 @@ namespace DiamondBudgets
             myImage.Source = MakeImage(percentage);
         }
 
-        private ImageSource MakeImage(decimal percentage)
+        public ImageSource MakeImage(decimal percentage)
         {
 
             //double width = App.ScreenWidth * 2;

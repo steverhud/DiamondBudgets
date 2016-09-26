@@ -2,7 +2,8 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:local="clr-namespace:DiamondBudgets"
-            x:Class="DiamondBudgets.SettingsTabbed">
+            x:Class="DiamondBudgets.SettingsTabbed"
+            Title="Settings">
 
   <local:UserSettings />
   <local:TodoList />

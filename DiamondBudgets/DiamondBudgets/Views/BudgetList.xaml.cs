@@ -91,6 +91,7 @@ namespace DiamondBudgets
             {
                 using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
                 {
+                    this.Title = PageTitle;
                     budgetList.ItemsSource = await manager.GetBudgetItemsAsync(syncItems, "Budget", category);
                 }
             }
