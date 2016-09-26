@@ -65,7 +65,8 @@ namespace DiamondBudgets
                     BudgetCategory actual = actuals.FirstOrDefault(x => x.Category == bc.Category);
                     if (actual != null)
                     {
-                        bc.Amount = (actual.Amount / (bc.Amount/12*9)) * 100;
+                        //TODO: Decide if this should be budget to date percentage or YTD.
+                        bc.Amount = (actual.Amount / (bc.Amount/12*9)) * 100; //This line is calcluating the percentageb bases on 9 months of budget
                         if (bc.Amount < 0)
                             bc.Amount = bc.Amount * -1;
                     }
@@ -129,29 +130,8 @@ namespace DiamondBudgets
         public async void OnSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var item = e.SelectedItem as PercentageBarValue;
-            //if (Device.OS != TargetPlatform.iOS && item != null)
-            //{
-            //    // Not iOS - the swipe-to-delete is discoverable there
-            //    if (Device.OS == TargetPlatform.Android)
-            //    {
-            //        await DisplayAlert(item.BarLabel, "Press-and-hold to complete task " + item.BarLabel, "Got it!");
-            //    }
-
-            //    await DisplayAlert(item.BarLabel, item.BarLabel, "Go");
-
-            //}
-
-            NavigationPage budgetList = new NavigationPage(new BudgetList() { category = item.BarLabel }) { BarBackgroundColor = Constants.DarkPrimaryColor};
+            NavigationPage budgetList = new NavigationPage(new BudgetList() { Category = item.BarLabel, master = master }) { BarBackgroundColor = Constants.DarkPrimaryColor};
             master.Detail = budgetList;
-            //await DisplayAlert(item.BarLabel, item.BarLabel, "Done");
-
-            // prevents background getting highlighted
-            //categoryList.SelectedItem = null;
-        }
-
-        public void Selected(string Category)
-        {
-
         }
 
     }

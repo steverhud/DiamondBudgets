@@ -57,7 +57,7 @@ namespace DiamondBudgets
             {
                 case "Budget List":
                     if (budgetList == null)
-                        budgetList = new NavigationPage(new BudgetList())
+                        budgetList = new NavigationPage(new BudgetList() { master = master })
                         {
                             BarBackgroundColor = Constants.DarkPrimaryColor
                         };

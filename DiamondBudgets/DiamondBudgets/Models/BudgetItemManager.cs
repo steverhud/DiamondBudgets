@@ -76,21 +76,48 @@ namespace DiamondBudgets
                 }
 #endif
                 IEnumerable<BudgetItem> items;
+                List<BudgetItem> returnItems = new List<BudgetItem>();
 
-                if (category != "" && category != null)
+                if (entityType != "Budget")
                 {
-                    items = await budgetTable
-                        .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category == category)
-                        .ToEnumerableAsync();
+                    if (category != "" && category != null)
+                    {
+                        items = await budgetTable
+                            .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category == category)
+                            .ToEnumerableAsync();
+                    }
+                    else
+                    {
+                        items = await budgetTable
+                            .Where(budgetItem => budgetItem.EntityType == entityType)
+                            .ToEnumerableAsync();
+                    }
                 }
                 else
                 {
                     items = await budgetTable
-                        .Where(budgetItem => budgetItem.EntityType == entityType)
+                        .Where(budgetItem => budgetItem.EntityType == "Budget" && budgetItem.Category == category)
                         .ToEnumerableAsync();
+                    IEnumerable<BudgetItem> actuals = await budgetTable
+                        .Where(budgetItem => budgetItem.EntityType == "Actual" && budgetItem.Category == category)
+                        .ToEnumerableAsync();
+
+                    foreach (BudgetItem bi in items)
+                    {
+                        BudgetItem actual = actuals.FirstOrDefault(x => x.Account == bi.Account);
+                        if (actual != null)
+                        {
+                            bi.ActualAmount = actual.Amount;
+                        }
+                        else
+                            bi.ActualAmount = 0;
+
+                        returnItems.Add(bi);
+                    }
+
                 }
 
-                return new ObservableCollection<BudgetItem>(items);
+                return new ObservableCollection<BudgetItem>(returnItems);
             }
             catch (MobileServiceInvalidOperationException msioe)
             {

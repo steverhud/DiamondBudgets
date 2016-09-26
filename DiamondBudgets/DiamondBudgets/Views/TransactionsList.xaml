@@ -2,10 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:DiamondBudgets"
-             x:Class="DiamondBudgets.BudgetList"
-             Title="{x:Static local:BudgetList.PageTitle}"
+             x:Class="DiamondBudgets.TransactionsList"
+             Title="Detail Transactions"
              BackgroundColor="{x:Static local:Constants.PrimaryColor}">
-
   <ContentPage.Padding>
     <OnPlatform x:TypeArguments="Thickness"
                 iOS="0,20,0,0" />
@@ -32,9 +31,9 @@
                        x:Name="syncIndicator"/>
 
 
-    <ListView x:Name="budgetList"
+    <ListView x:Name="transactionList"
               ItemSelected="OnSelected"
-              IsPullToRefreshEnabled="true" 
+              IsPullToRefreshEnabled="true"
               Refreshing="OnRefresh"
               Grid.Row="0"
               SeparatorVisibility="Default">
@@ -50,12 +49,12 @@
                            HorizontalOptions="StartAndExpand"
                            Spacing="2">
 
-                <Label Text="{Binding Description}"
+                <Label Text="{Binding Transaction}"
                        FontAttributes="Bold"
                        FontSize="Small"
                        VerticalTextAlignment="Start"
                        />
-                <Label Text="{Binding Account}"
+                <Label Text="{Binding TransactionDate}"
                        FontSize="Micro"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="End"
@@ -71,21 +70,6 @@
                        HorizontalOptions="EndAndExpand"
                        HorizontalTextAlignment="End"
                        VerticalTextAlignment="Start"/>
-                
-                <Label Text="{Binding ActualAmount, StringFormat='{0:C2}'}"
-                       WidthRequest="200"
-                       FontSize="Small"
-                       HorizontalOptions="EndAndExpand"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="End">
-                  <Label.Triggers>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding ActualOverBudget}"
-                                 Value="True">
-                      <Setter Property="TextColor" Value="Red" />
-                    </DataTrigger>
-                  </Label.Triggers>
-                </Label>
               </StackLayout>
             </StackLayout>
           </ViewCell>

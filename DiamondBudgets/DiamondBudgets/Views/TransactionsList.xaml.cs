@@ -8,42 +8,18 @@ using Xamarin.Forms;
 
 namespace DiamondBudgets
 {
-    public partial class BudgetList : ContentPage
+    public partial class TransactionsList : ContentPage
     {
-        BudgetItemManager manager;
+        BudgetTransactionManager manager;
 
-        static string category;
-        public string Category
-        {
-            get { return category; }
-            set { category = value; }
-        }
+        public string account { get; set; }
 
-        public MasterDetailPage master { get; set; }
-
-        public static string PageTitle
-        {
-            get
-            {
-                string pageTitle;
-                if (category != "" && category != null)
-                    pageTitle = "Budget List - " + category;
-                else
-                    pageTitle = "Budget List";
-
-                return pageTitle;
-            }
-
-        }
-
-        public BudgetList()
+        public TransactionsList()
         {
             InitializeComponent();
 
-            manager = BudgetItemManager.DefaultManager;
-
+            manager = BudgetTransactionManager.DefaultManager;
         }
-
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -69,7 +45,7 @@ namespace DiamondBudgets
             Exception error = null;
             try
             {
-                await RefreshItems(false, true);
+                await RefreshItems(false, false);
             }
             catch (Exception ex)
             {
@@ -91,7 +67,7 @@ namespace DiamondBudgets
             {
                 using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
                 {
-                    budgetList.ItemsSource = await manager.GetBudgetItemsAsync(syncItems, "Budget", category);
+                    transactionList.ItemsSource = await manager.GetBudgetTransactionAsync(syncItems, account);
                 }
             }
             catch (Exception e)
@@ -137,10 +113,26 @@ namespace DiamondBudgets
         }
         public async void OnSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as BudgetItem;
-            NavigationPage transactionList = new NavigationPage(new TransactionsList() { account = item.Account }) { BarBackgroundColor = Constants.DarkPrimaryColor };
-            master.Detail = transactionList;
+            var todo = e.SelectedItem as TodoItem;
+            if (Device.OS != TargetPlatform.iOS && todo != null)
+            {
+                // Not iOS - the swipe-to-delete is discoverable there
+                if (Device.OS == TargetPlatform.Android)
+                {
+                    await DisplayAlert(todo.Name, "Press-and-hold to complete task " + todo.Name, "Got it!");
+                }
+                else
+                {
+                    // Windows, not all platforms support the Context Actions yet
+                    if (await DisplayAlert("Mark completed?", "Do you wish to complete " + todo.Name + "?", "Complete", "Cancel"))
+                    {
+                        //await CompleteItem(todo);
+                    }
+                }
+            }
 
+            // prevents background getting highlighted
+            transactionList.SelectedItem = null;
         }
     }
 }

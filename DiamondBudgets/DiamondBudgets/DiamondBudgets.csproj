@@ -46,6 +46,8 @@
     <Compile Include="Models\BudgetCategoryManager.cs" />
     <Compile Include="Models\BudgetItem.cs" />
     <Compile Include="Models\BudgetItemManager.cs" />
+    <Compile Include="Models\BudgetTransaction.cs" />
+    <Compile Include="Models\BudgetTransactionManager.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\TodoItem.cs" />
     <Compile Include="Models\TodoItemManager.cs" />
@@ -68,6 +70,9 @@
     <Compile Include="Views\TodoItemImage.cs" />
     <Compile Include="Views\TodoList.xaml.cs">
       <DependentUpon>TodoList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TransactionsList.xaml.cs">
+      <DependentUpon>TransactionsList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserSettings.xaml.cs">
       <DependentUpon>UserSettings.xaml</DependentUpon>
@@ -195,6 +200,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\BudgetCatagoryList.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\TransactionsList.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

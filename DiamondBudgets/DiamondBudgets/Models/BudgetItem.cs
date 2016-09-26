@@ -13,6 +13,7 @@ namespace DiamondBudgets
         string account;
         string description;
         decimal amount;
+        decimal actualAmount;
         string budgetId;
         string category;
         int budgetYear;
@@ -58,6 +59,17 @@ namespace DiamondBudgets
         {
             get { return amount; }
             set { amount = value; }
+        }
+
+        public decimal ActualAmount
+        {
+            get { return actualAmount; }
+            set { actualAmount = value; }
+        }
+
+        public bool ActualOverBudget
+        {
+            get { return Math.Abs(actualAmount) >= Math.Abs(amount); }
         }
 
         [JsonProperty(PropertyName = "BudgetId")]
