@@ -10,7 +10,6 @@ namespace DiamondBudgets
 {
     public class PercentageBar : ViewCell
     {
-        Image myImage;
         Label barAmount;
         Label barLabel;
         decimal percentage = new decimal();
@@ -19,68 +18,56 @@ namespace DiamondBudgets
 
         public PercentageBar()
         {
+            ContextActions.Add(new MenuItem() { Text = "% Complete" });
+            ContextActions.Add(new MenuItem() { Text = "Variance" });
+            ContextActions.Add(new MenuItem() { Text = "YTD Actual" });
+            ContextActions.Add(new MenuItem() { Text = "Budget Amount" });
+
             Grid myGrid = new Grid
             {
                 //Padding = new Thickness(0, 5, 0, 0),
                 RowDefinitions =
                 {
                     new RowDefinition {Height = new GridLength(10, GridUnitType.Auto) },
-                    new RowDefinition {Height = new GridLength(10, GridUnitType.Auto) },
+                    new RowDefinition {Height = new GridLength(10, GridUnitType.Star) },
                 },
 
                 HorizontalOptions = LayoutOptions.Fill,
             };
 
-            RelativeLayout layout = new RelativeLayout()
+            Grid innerGrid = new Grid
             {
-//                HorizontalOptions = LayoutOptions.Fill,
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition {Width = new GridLength(App.ScreenWidth * .75, GridUnitType.Star) },
+                    new ColumnDefinition {Width = new GridLength(App.ScreenWidth * .25, GridUnitType.Star) },
+                },
+                VerticalOptions = LayoutOptions.Fill,
             };
 
             barLabel = new Label()
             {
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = Color.Black,
                 HorizontalTextAlignment = TextAlignment.Start,
-                VerticalTextAlignment = TextAlignment.Center
+                VerticalTextAlignment = TextAlignment.Center,
             };
 
             barAmount = new Label()
             {
-                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                TextColor = Color.Blue,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.Black,
                 HorizontalTextAlignment = TextAlignment.End,
-                VerticalTextAlignment = TextAlignment.Center
-            };
-
-            myImage = new Image()
-            {
-                Source = MakeImage(percentage),
-                HorizontalOptions = LayoutOptions.StartAndExpand,
+                VerticalTextAlignment = TextAlignment.Center,
             };
 
             barLabel.SetBinding(Label.TextProperty, "BarLabel");
             barAmount.SetBinding(Label.TextProperty, "Percentage");
-            myImage.SetBinding(Image.SourceProperty, "Image");
+            innerGrid.SetBinding(StackLayout.BackgroundColorProperty, "BarColor");
 
-            layout.Children.Add(myImage,
-                Constraint.Constant(0),
-                Constraint.Constant(0),
-                Constraint.RelativeToParent((parent) => { return parent.Width; }),
-                Constraint.RelativeToParent((parent) => { return parent.Height; }));
-
-            layout.Children.Add(barLabel,
-                Constraint.Constant(0),
-                Constraint.Constant(0),
-                Constraint.RelativeToParent((parent) => { return parent.Width; }),
-                Constraint.RelativeToParent((parent) => { return parent.Height; }));
-
-            layout.Children.Add(barAmount,
-                Constraint.Constant(0),
-                Constraint.Constant(0),
-                Constraint.RelativeToParent((parent) => { return parent.Width; }),
-                Constraint.RelativeToParent((parent) => { return parent.Height; }));
-
-            myGrid.Children.Add(layout, 0, 1);
+            innerGrid.Children.Add(barLabel, 0, 0);
+            innerGrid.Children.Add(barAmount, 1, 0);
+            myGrid.Children.Add(innerGrid, 0, 1);
 
             View = myGrid;
         }
@@ -103,50 +90,7 @@ namespace DiamondBudgets
                 else
                     barAmount.Text = string.Format("{0:#,#.##}", (percentage * 100)) + "%";
 
-                MakeBar();
             }
         }
-
-        private void MakeBar()
-        {
-            myImage.Source = MakeImage(percentage);
-        }
-
-        public ImageSource MakeImage(decimal percentage)
-        {
-
-            //double width = App.ScreenWidth * 2;
-            decimal width = Convert.ToDecimal(App.ScreenWidth);
-
-            if (percentage > 1)
-                percentage = 1;
-
-            int rows = 128;
-            int cols = 64;
-            int red = 0;
-            //int green = 255;
-            int green = 256;
-
-            cols = Convert.ToInt32(Math.Round((decimal)width * percentage,0));
-
-            BmpMaker bmpMaker = new BmpMaker(cols, rows);
-
-            for (int col = 0; col < cols; col++)
-            {
-                for (int row = 0; row < rows; row++)
-                {
-                    bmpMaker.SetPixel(row, col, red, green, 0);
-                }
-
-                red = (Convert.ToInt32(((double)col / (double)width) * 128)) * 2 - 1;
-                //green = 256 - red;
-                //green = 2 * (128 - Convert.ToInt32((col / width) * 128));
-                double greenAlter = Math.Sin((1 - (double)col / (double)width) * Math.PI / 2) * 255;
-                green = Convert.ToInt32(greenAlter);
-            }
-            ImageSource imageSource = bmpMaker.Generate();
-            return imageSource;
-        }
-
     }
 }

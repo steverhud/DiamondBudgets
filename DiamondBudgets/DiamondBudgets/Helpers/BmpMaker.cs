@@ -80,6 +80,7 @@ namespace DiamondBudgets
         {
             // Create MemoryStream from buffer with bitmap.
             MemoryStream memoryStream = new MemoryStream(buffer);
+            memoryStream.Seek(0,SeekOrigin.Begin);
 
             // Convert to StreamImageSource.
             ImageSource imageSource = ImageSource.FromStream(() =>

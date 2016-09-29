@@ -13,7 +13,7 @@ namespace DiamondBudgets
         int journalEntry;
         string description;
         string transaction;
-        int sequenceNumber;
+        string masterID;
         string transactionDate;
         decimal amount;
         decimal debitAmount;
@@ -61,11 +61,11 @@ namespace DiamondBudgets
             set { transaction = value; }
         }
 
-        [JsonProperty(PropertyName = "SequenceNumber")]
-        public int SequenceNumber
+        [JsonProperty(PropertyName = "MasterID")]
+        public string MasterID
         {
-            get { return sequenceNumber; }
-            set { sequenceNumber = value; }
+            get { return masterID; }
+            set { masterID = value; }
         }
 
         [JsonProperty(PropertyName = "TransactionDate")]

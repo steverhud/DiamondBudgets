@@ -49,7 +49,7 @@
                            HorizontalOptions="StartAndExpand"
                            Spacing="2">
 
-                <Label Text="{Binding Transaction}"
+                <Label Text="{Binding Description}"
                        FontAttributes="Bold"
                        FontSize="Small"
                        VerticalTextAlignment="Start"

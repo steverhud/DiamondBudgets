@@ -36,6 +36,10 @@ namespace DiamondBudgets
 
         }
 
+        public static string Column1 { get { return (App.ScreenWidth * .5).ToString(); }}
+        public static string Column2 { get { return (App.ScreenWidth * .25).ToString(); } }
+        public static string Column3 { get { return (App.ScreenWidth * .25).ToString(); } }
+
         public BudgetList()
         {
             InitializeComponent();
@@ -92,7 +96,30 @@ namespace DiamondBudgets
                 using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
                 {
                     this.Title = PageTitle;
-                    budgetList.ItemsSource = await manager.GetBudgetItemsAsync(syncItems, "Budget", category);
+                    IEnumerable<BudgetItem> budgets = await manager.GetBudgetItemsAsync(syncItems, "Budget", category);
+
+                    List<BudgetBar> newBudgetList = new List<BudgetBar>();
+                    foreach (BudgetItem budget in budgets)
+                    {
+                        Color textColor;
+                        if (Math.Abs(budget.Amount) < Math.Abs(budget.ActualAmount))
+                            textColor = Color.Red;
+                        else
+                            textColor = Color.Black;
+
+                        newBudgetList.Add(new BudgetBar
+                        {
+                            Account = budget.Account,
+                            Description = budget.Description,
+                            Amount = budget.Amount.ToString("C"),
+                            ActualAmount = budget.ActualAmount.ToString("C"),
+                            ActualAmountColor = textColor
+                        });
+                    }
+
+                    DataTemplate dt = new DataTemplate(typeof(BudgetCell));
+                    budgetList.ItemsSource = newBudgetList;
+                    budgetList.ItemTemplate = dt;
                 }
             }
             catch (Exception e)
@@ -138,10 +165,19 @@ namespace DiamondBudgets
         }
         public async void OnSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as BudgetItem;
+            var item = e.SelectedItem as BudgetBar;
             NavigationPage transactionList = new NavigationPage(new TransactionsList() { account = item.Account }) { BarBackgroundColor = Constants.DarkPrimaryColor };
             master.Detail = transactionList;
 
         }
+    }
+
+    public class BudgetBar
+    {
+        public string Account { get; set; }
+        public string Description { get; set; }
+        public string Amount { get; set; }
+        public string ActualAmount { get; set; }
+        public Color ActualAmountColor { get; set; }
     }
 }

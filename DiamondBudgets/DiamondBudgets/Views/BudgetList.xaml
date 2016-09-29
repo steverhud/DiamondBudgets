@@ -20,30 +20,57 @@
     </ResourceDictionary>
   </ContentPage.Resources>
 
-  <Grid RowSpacing="0">
+  <Grid RowSpacing="0"
+        x:Name="outerGrid"
+        Padding="0,0,5,0">
     <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
+      <RowDefinition Height="30" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <ActivityIndicator Grid.RowSpan="1"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       IsVisible="False"
-                       IsEnabled="True"
-                       x:Name="syncIndicator"/>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="{Binding Source={x:Static local:BudgetList.Column1}" />
+      <ColumnDefinition Width="{Binding Source={x:Static local:BudgetList.Column2}" />
+      <ColumnDefinition Width="{Binding Source={x:Static local:BudgetList.Column3}" />
+    </Grid.ColumnDefinitions>
+    
+    <Label Text="Account"
+           Grid.Row="0" Grid.Column="0"
+           HorizontalTextAlignment="Start"
+           FontAttributes="Bold"/>
 
+    <Label Text="Budget Amount"
+           Grid.Row="0" Grid.Column="1"
+           HorizontalTextAlignment="End"
+           FontAttributes="Bold"/>
+
+    <Label Text="Actual Amount"
+           Grid.Row="0" Grid.Column="2"
+           HorizontalTextAlignment="End"
+           FontAttributes="Bold"/>
 
     <ListView x:Name="budgetList"
               ItemSelected="OnSelected"
               IsPullToRefreshEnabled="true" 
               Refreshing="OnRefresh"
-              Grid.Row="0"
+              Grid.Row="1"
+              Grid.Column="0"
+              Grid.ColumnSpan="3"
               SeparatorVisibility="Default">
-      <ListView.ItemTemplate>
+      
+      <ActivityIndicator Grid.RowSpan="2"
+                         Grid.ColumnSpan="3"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         IsVisible="False"
+                         IsEnabled="True"
+                         x:Name="syncIndicator"/>
+
+      <!--<ListView.ItemTemplate>
         <DataTemplate>
           <ViewCell>
             <ViewCell.ContextActions>
-              <!--<MenuItem Clicked="OnComplete" Text="Complete" CommandParameter="{Binding .}"/>-->
+              --><!--<MenuItem Clicked="OnComplete" Text="Complete" CommandParameter="{Binding .}"/>--><!--
             </ViewCell.ContextActions>
             <StackLayout Orientation="Horizontal"
                          BackgroundColor="{x:Static local:Constants.PrimaryColor}">
@@ -55,6 +82,8 @@
                        FontAttributes="Bold"
                        FontSize="Small"
                        VerticalTextAlignment="Start"
+                       BackgroundColor="Blue"
+                       WidthRequest="75"
                        />
                 <Label Text="{Binding Account}"
                        FontSize="Micro"
@@ -68,17 +97,12 @@
 
                 <Label Text="{Binding Amount, StringFormat='{0:C2}'}"
                        WidthRequest="200"
-                       FontSize="Small"
-                       HorizontalOptions="EndAndExpand"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="Start"/>
-                
+                       FontSize="Small"/>
+
                 <Label Text="{Binding ActualAmount, StringFormat='{0:C2}'}"
                        WidthRequest="200"
                        FontSize="Small"
-                       HorizontalOptions="EndAndExpand"
-                       HorizontalTextAlignment="End"
-                       VerticalTextAlignment="End">
+                       HorizontalTextAlignment="End">
                   <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding ActualOverBudget}"
@@ -91,7 +115,7 @@
             </StackLayout>
           </ViewCell>
         </DataTemplate>
-      </ListView.ItemTemplate>
+      </ListView.ItemTemplate>-->
     </ListView>
   </Grid>
 </ContentPage>

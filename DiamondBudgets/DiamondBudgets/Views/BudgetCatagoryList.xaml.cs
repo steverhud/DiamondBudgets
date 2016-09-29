@@ -65,8 +65,7 @@ namespace DiamondBudgets
                     BudgetCategory actual = actuals.FirstOrDefault(x => x.Category == bc.Category);
                     if (actual != null)
                     {
-                        //TODO: Decide if this should be budget to date percentage or YTD.
-                        bc.Amount = (actual.Amount / (bc.Amount/12*9)) * 100; //This line is calcluating the percentageb bases on 9 months of budget
+                        bc.Amount = (actual.Amount / (bc.Amount)) * 100; 
                         if (bc.Amount < 0)
                             bc.Amount = bc.Amount * -1;
                     }
@@ -78,16 +77,23 @@ namespace DiamondBudgets
                 foreach(BudgetCategory budget in budgets)
                 {
                     decimal newPercentage = Math.Round((budget.Amount / 100), 2);
+                    Color barColor;
+                    if (newPercentage >= (decimal)1.0)
+                        barColor = Color.Red;
+                    else if (newPercentage >= (decimal)0.85)
+                        barColor = Color.Yellow;
+                    else
+                        barColor = Color.Green;
+
                     PercentageBars.Add(new PercentageBarValue
                     {
                         BarLabel = budget.Category,
                         Percentage = newPercentage,
-                        Image = MakeImage(newPercentage)
+                        BarColor = barColor
                     });
                 }
 
                 DataTemplate dt = new DataTemplate(typeof(PercentageBar));
-                //categoryList.ItemsSource = PercentageBars;
                 categoryList.ItemsSource = new ObservableCollection<PercentageBarValue>(PercentageBars);
                 categoryList.ItemTemplate = dt;
                 categoryList.SeparatorVisibility = SeparatorVisibility.None;
@@ -135,49 +141,11 @@ namespace DiamondBudgets
             NavigationPage budgetList = new NavigationPage(new BudgetList() { Category = item.BarLabel, master = master }) { BarBackgroundColor = Constants.DarkPrimaryColor};
             master.Detail = budgetList;
         }
-
-        public ImageSource MakeImage(decimal percentage)
-        {
-
-            //double width = App.ScreenWidth * 2;
-            decimal width = Convert.ToDecimal(App.ScreenWidth);
-
-            if (percentage > 1)
-                percentage = 1;
-
-            int rows = 128;
-            int cols = 64;
-            int red = 0;
-            //int green = 255;
-            int green = 256;
-
-            cols = Convert.ToInt32(Math.Round((decimal)width * percentage, 0));
-
-            BmpMaker bmpMaker = new BmpMaker(cols, rows);
-
-            for (int col = 0; col < cols; col++)
-            {
-                for (int row = 0; row < rows; row++)
-                {
-                    bmpMaker.SetPixel(row, col, red, green, 0);
-                }
-
-                red = (Convert.ToInt32(((double)col / (double)width) * 128)) * 2 - 1;
-                //green = 256 - red;
-                //green = 2 * (128 - Convert.ToInt32((col / width) * 128));
-                double greenAlter = Math.Sin((1 - (double)col / (double)width) * Math.PI / 2) * 255;
-                green = Convert.ToInt32(greenAlter);
-            }
-            ImageSource imageSource = bmpMaker.Generate();
-            return imageSource;
-        }
-
-
     }
     public class PercentageBarValue
     {
         public string BarLabel { get; set; }
         public decimal Percentage { get; set; }
-        public ImageSource Image { get; set; }
+        public Color BarColor { get; set;}
     }
 }

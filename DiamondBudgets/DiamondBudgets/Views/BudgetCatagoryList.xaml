@@ -31,28 +31,11 @@
                        IsVisible="False"
                        IsEnabled="True"
                        x:Name="syncIndicator"/>
-
-    <!--<AbsoluteLayout x:Name ="DepartmentAL" />-->
     
     <ListView x:Name="categoryList"
 				ItemSelected="OnSelected"
 				IsPullToRefreshEnabled="true" Refreshing="OnRefresh"
 				Grid.Row="0"/>
-      <!--<ListView.ItemTemplate>
-        <DataTemplate>
-          <ViewCell>
-            <ViewCell.ContextActions>
-              --><!--<MenuItem Clicked="OnComplete" Text="Complete" CommandParameter="{Binding .}"/>--><!--
-            </ViewCell.ContextActions>
-            <StackLayout Orientation="Horizontal">
-              <Label Text="{Binding Category}"
-                     FontAttributes="Bold"/>
-              <Label Text="{Binding Amount, StringFormat='{0:F2}%'}"
-                     HorizontalOptions="EndAndExpand"/>
-            </StackLayout>
-          </ViewCell>
-        </DataTemplate>
-      </ListView.ItemTemplate>
-    </ListView>-->
+
   </Grid>
 </ContentPage>
