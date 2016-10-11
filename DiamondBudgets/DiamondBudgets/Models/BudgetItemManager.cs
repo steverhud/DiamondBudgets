@@ -65,7 +65,7 @@ namespace DiamondBudgets
         }
 
         public async Task<ObservableCollection<BudgetItem>> GetBudgetItemsAsync(bool syncItems = false, string entityType = "Budget",
-            string category = "")
+            string category1 = "", string category2 = "")
         {
             try
             {
@@ -81,40 +81,70 @@ namespace DiamondBudgets
 
                 if (entityType != "Budget")
                 {
-                    if (category != "" && category != null)
+                    if (category2 != "" && category2 != null && category1 != "" && category1 != null)
                     {
                         items = await budgetTable
-                            .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category1 == category)
+                            .Where(budgetItem => budgetItem.EntityType == entityType && 
+                                        budgetItem.Category1 == category1 && budgetItem.Category2 == category2)
+                            .OrderBy(bi => bi.Account)
                             .ToEnumerableAsync();
                     }
                     else
-                    {
-                        items = await budgetTable
-                            .Where(budgetItem => budgetItem.EntityType == entityType)
-                            .ToEnumerableAsync();
+                    { 
+                        if (category1 != "" && category1 != null)
+                        {
+                            items = await budgetTable
+                                .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category1 == category1)
+                                .OrderBy(bi => bi.Category2)
+                                .ThenBy(bi => bi.Account)
+                                .ToEnumerableAsync();
+                        }
+                        else
+                        {
+                            items = await budgetTable
+                                .Where(budgetItem => budgetItem.EntityType == entityType)
+                                .OrderBy(bi => bi.Category1)
+                                .ThenBy(bi => bi.Category2)
+                                .ThenBy(bi => bi.Account)
+                                .ToEnumerableAsync();
+                        }
                     }
                 }
                 else
                 {
-                    if (category != "" && category != null)
+                    if (category2 != "" && category2 != null && category1 != "" && category1 != null)
                     {
                         items = await budgetTable
-                            .Where(budgetItem => budgetItem.EntityType == "Budget" && budgetItem.Category1 == category)
+                            .Where(budgetItem => budgetItem.EntityType == "Budget" && 
+                                        budgetItem.Category1 == category1 && budgetItem.Category2 == category2)
                             .ToEnumerableAsync();
                         actuals = await budgetTable
-                            .Where(budgetItem => budgetItem.EntityType == "Actual" && budgetItem.Category1 == category)
+                            .Where(budgetItem => budgetItem.EntityType == "Actual" && 
+                                        budgetItem.Category1 == category1 && budgetItem.Category2 == category2)
                             .ToEnumerableAsync();
                     }
                     else
-                    {
-                        items = await budgetTable
-                            .Where(budgetItem => budgetItem.EntityType == "Budget")
-                            .OrderBy(BudgetItem => BudgetItem.Account)
-                            .ToEnumerableAsync();
-                        actuals = await budgetTable
-                            .Where(budgetItem => budgetItem.EntityType == "Actual")
-                            .OrderBy(BudgetItem => BudgetItem.Account)
-                            .ToEnumerableAsync();
+                    { 
+                        if (category1 != "" && category1 != null)
+                        {
+                            items = await budgetTable
+                                .Where(budgetItem => budgetItem.EntityType == "Budget" && budgetItem.Category1 == category1)
+                                .ToEnumerableAsync();
+                            actuals = await budgetTable
+                                .Where(budgetItem => budgetItem.EntityType == "Actual" && budgetItem.Category1 == category1)
+                                .ToEnumerableAsync();
+                        }
+                        else
+                        {
+                            items = await budgetTable
+                                .Where(budgetItem => budgetItem.EntityType == "Budget")
+                                .OrderBy(BudgetItem => BudgetItem.Account)
+                                .ToEnumerableAsync();
+                            actuals = await budgetTable
+                                .Where(budgetItem => budgetItem.EntityType == "Actual")
+                                .OrderBy(BudgetItem => BudgetItem.Account)
+                                .ToEnumerableAsync();
+                        }
                     }
                     foreach (BudgetItem bi in items)
                     {

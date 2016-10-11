@@ -15,7 +15,6 @@ namespace DiamondBudgets
 
         public MasterDetailPage master { get; set; }
 
-
         public BudgetCatagoryList()
         {
             InitializeComponent();
@@ -141,7 +140,7 @@ namespace DiamondBudgets
         public async void OnSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var item = e.SelectedItem as PercentageBarValue;
-            NavigationPage budgetList = new NavigationPage(new BudgetList() { Category = item.BarLabel, master = master }) { BarBackgroundColor = Constants.DarkPrimaryColor};
+            NavigationPage budgetList = new NavigationPage(new Catagory2List() { Category1 = item.BarLabel, master = master }) { BarBackgroundColor = Constants.DarkPrimaryColor};
             master.Detail = budgetList;
         }
     }

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DiamondBudgets"
+             x:Class="DiamondBudgets.Catagory2List"
+             Title="Budget - By Sub-department"
+             BackgroundColor="{x:Static local:Constants.PrimaryColor}">
+  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness"
+              iOS="0,20,0,0" />
+  </ContentPage.Padding>
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{x:Static local:Constants.DarkTextColor}" />
+        <Setter Property="FontSize" Value="Large" />
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <ActivityIndicator Grid.RowSpan="1"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       IsVisible="False"
+                       IsEnabled="True"
+                       x:Name="syncIndicator"/>
+
+    <ListView x:Name="category2List"
+              ItemSelected="OnSelected"
+              IsPullToRefreshEnabled="true" Refreshing="OnRefresh"
+              Grid.Row="0"/>
+
+  </Grid>
+</ContentPage>

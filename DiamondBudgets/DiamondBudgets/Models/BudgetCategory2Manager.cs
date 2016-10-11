@@ -14,18 +14,18 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 
 namespace DiamondBudgets
 {
-    public partial class BudgetCategoryManager
+    public partial class BudgetCategory2Manager
     {
-        static BudgetCategoryManager defaultInstance = new BudgetCategoryManager();
+        static BudgetCategory2Manager defaultInstance = new BudgetCategory2Manager();
         MobileServiceClient client;
 
 #if OFFLINE_SYNC_ENABLED
         IMobileServiceSyncTable<BudgetCategory> budgetCategoryTable;
 #else
-        IMobileServiceTable<BudgetCategory> budgetCategoryTable;
+        IMobileServiceTable<BudgetCategory2> budgetCategoryTable;
 #endif
 
-        private BudgetCategoryManager()
+        private BudgetCategory2Manager()
         {
             this.client = new MobileServiceClient(
                 Constants.ApplicationURL);
@@ -39,11 +39,11 @@ namespace DiamondBudgets
 
             this.todoTable = client.GetSyncTable<BudgetCategory>();
 #else
-            this.budgetCategoryTable = client.GetTable<BudgetCategory>();
+            this.budgetCategoryTable = client.GetTable<BudgetCategory2>();
 #endif
         }
 
-        public static BudgetCategoryManager DefaultManager
+        public static BudgetCategory2Manager DefaultManager
         {
             get
             {
@@ -62,10 +62,10 @@ namespace DiamondBudgets
 
         public bool IsOfflineEnabled
         {
-            get { return budgetCategoryTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<BudgetCategory>; }
+            get { return budgetCategoryTable is Microsoft.WindowsAzure.MobileServices.Sync.IMobileServiceSyncTable<BudgetCategory2>; }
         }
 
-        public async Task<ObservableCollection<BudgetCategory>> GetBudgeCategorysAsync(bool syncItems = false, 
+        public async Task<ObservableCollection<BudgetCategory2>> GetBudgeCategorysAsync(bool syncItems = false, 
             string entityType = "Budget", string category1 = "")
         {
             try
@@ -76,7 +76,7 @@ namespace DiamondBudgets
                     await this.SyncAsync();
                 }
 #endif
-                IEnumerable<BudgetCategory> items;
+                IEnumerable<BudgetCategory2> items;
 
                 if (category1 != null && category1 != "")
                 {
@@ -91,7 +91,7 @@ namespace DiamondBudgets
                         .ToEnumerableAsync();
                 }
 
-                return new ObservableCollection<BudgetCategory>(items);
+                return new ObservableCollection<BudgetCategory2>(items);
             }
             catch (MobileServiceInvalidOperationException msioe)
             {
@@ -104,7 +104,7 @@ namespace DiamondBudgets
             return null;
         }
 
-        public async Task SaveTaskAsync(BudgetCategory item)
+        public async Task SaveTaskAsync(BudgetCategory2 item)
         {
             if (item.Id == null)
             {

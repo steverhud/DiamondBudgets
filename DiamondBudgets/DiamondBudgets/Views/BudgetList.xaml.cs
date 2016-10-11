@@ -12,11 +12,18 @@ namespace DiamondBudgets
     {
         BudgetItemManager manager;
 
-        static string category;
-        public string Category
+        static string category1;
+        public string Category1
         {
-            get { return category; }
-            set { category = value; }
+            get { return category1; }
+            set { category1 = value; }
+        }
+
+        static string category2;
+        public string Category2
+        {
+            get { return category2; }
+            set { category2 = value; }
         }
 
         public MasterDetailPage master { get; set; }
@@ -26,8 +33,10 @@ namespace DiamondBudgets
             get
             {
                 string pageTitle;
-                if (category != "" && category != null)
-                    pageTitle = "Budget List - " + category;
+                if (category2 != "" && category2 != null)
+                    pageTitle = "Budget List - " + category2;
+                else if (category1 != "" && category1 != null)
+                    pageTitle = "Budget List - " + category1;
                 else
                     pageTitle = "Budget List";
 
@@ -96,7 +105,7 @@ namespace DiamondBudgets
                 using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
                 {
                     this.Title = PageTitle;
-                    IEnumerable<BudgetItem> budgets = await manager.GetBudgetItemsAsync(syncItems, "Budget", category);
+                    IEnumerable<BudgetItem> budgets = await manager.GetBudgetItemsAsync(syncItems, "Budget", category1, category2);
 
                     List<BudgetBar> newBudgetList = new List<BudgetBar>();
                     foreach (BudgetItem budget in budgets)
