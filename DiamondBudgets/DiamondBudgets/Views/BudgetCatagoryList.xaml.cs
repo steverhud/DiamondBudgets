@@ -60,43 +60,46 @@ namespace DiamondBudgets
                 IEnumerable<BudgetCategory> budgets = await manager.GetBudgeCategorysAsync(entityType: "Budget");
                 IEnumerable<BudgetCategory> actuals = await manager.GetBudgeCategorysAsync(entityType: "Actual");
 
-                foreach(BudgetCategory bc in budgets)
+                if (budgets != null)
                 {
-                    BudgetCategory actual = actuals.FirstOrDefault(x => x.Category == bc.Category);
-                    if (actual != null)
+                    foreach (BudgetCategory bc in budgets)
                     {
-                        bc.Amount = (actual.Amount / (bc.Amount)) * 100; 
-                        if (bc.Amount < 0)
-                            bc.Amount = bc.Amount * -1;
+                        BudgetCategory actual = actuals.FirstOrDefault(x => x.Category1 == bc.Category1);
+                        if (actual != null)
+                        {
+                            bc.Amount = (actual.Amount / (bc.Amount)) * 100;
+                            if (bc.Amount < 0)
+                                bc.Amount = bc.Amount * -1;
+                        }
+                        else
+                            bc.Amount = 0;
                     }
-                    else
-                        bc.Amount = 0;
-                }
 
-                List<PercentageBarValue> PercentageBars = new List<PercentageBarValue>();
-                foreach(BudgetCategory budget in budgets)
-                {
-                    decimal newPercentage = Math.Round((budget.Amount / 100), 2);
-                    Color barColor;
-                    if (newPercentage >= (decimal)1.0)
-                        barColor = Color.Red;
-                    else if (newPercentage >= (decimal)0.85)
-                        barColor = Color.Yellow;
-                    else
-                        barColor = Color.Green;
-
-                    PercentageBars.Add(new PercentageBarValue
+                    List<PercentageBarValue> PercentageBars = new List<PercentageBarValue>();
+                    foreach (BudgetCategory budget in budgets)
                     {
-                        BarLabel = budget.Category,
-                        Percentage = newPercentage,
-                        BarColor = barColor
-                    });
-                }
+                        decimal newPercentage = Math.Round((budget.Amount / 100), 2);
+                        Color barColor;
+                        if (newPercentage >= (decimal)1.0)
+                            barColor = Color.Red;
+                        else if (newPercentage >= (decimal)0.85)
+                            barColor = Color.Yellow;
+                        else
+                            barColor = Color.Green;
 
-                DataTemplate dt = new DataTemplate(typeof(PercentageBar));
-                categoryList.ItemsSource = new ObservableCollection<PercentageBarValue>(PercentageBars);
-                categoryList.ItemTemplate = dt;
-                categoryList.SeparatorVisibility = SeparatorVisibility.None;
+                        PercentageBars.Add(new PercentageBarValue
+                        {
+                            BarLabel = budget.Category1,
+                            Percentage = newPercentage,
+                            BarColor = barColor,
+                        });
+                    }
+
+                    DataTemplate dt = new DataTemplate(typeof(PercentageBar));
+                    categoryList.ItemsSource = new ObservableCollection<PercentageBarValue>(PercentageBars);
+                    categoryList.ItemTemplate = dt;
+                    categoryList.SeparatorVisibility = SeparatorVisibility.None;
+                }
             }
         }
         private class ActivityIndicatorScope : IDisposable

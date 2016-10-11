@@ -55,7 +55,7 @@ namespace DiamondBudgets
             try
             {
                 // Set syncItems to true in order to synchronize the data on startup when running in offline mode
-                await RefreshItems(true, syncItems: false);
+                await RefreshItems(false, syncItems: false);
             }
             catch (FormatException e)
             {

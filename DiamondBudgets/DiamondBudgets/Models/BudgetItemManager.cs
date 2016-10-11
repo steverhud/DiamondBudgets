@@ -76,6 +76,7 @@ namespace DiamondBudgets
                 }
 #endif
                 IEnumerable<BudgetItem> items;
+                IEnumerable<BudgetItem> actuals;
                 List<BudgetItem> returnItems = new List<BudgetItem>();
 
                 if (entityType != "Budget")
@@ -83,7 +84,7 @@ namespace DiamondBudgets
                     if (category != "" && category != null)
                     {
                         items = await budgetTable
-                            .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category == category)
+                            .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category1 == category)
                             .ToEnumerableAsync();
                     }
                     else
@@ -95,13 +96,26 @@ namespace DiamondBudgets
                 }
                 else
                 {
-                    items = await budgetTable
-                        .Where(budgetItem => budgetItem.EntityType == "Budget" && budgetItem.Category == category)
-                        .ToEnumerableAsync();
-                    IEnumerable<BudgetItem> actuals = await budgetTable
-                        .Where(budgetItem => budgetItem.EntityType == "Actual" && budgetItem.Category == category)
-                        .ToEnumerableAsync();
-
+                    if (category != "" && category != null)
+                    {
+                        items = await budgetTable
+                            .Where(budgetItem => budgetItem.EntityType == "Budget" && budgetItem.Category1 == category)
+                            .ToEnumerableAsync();
+                        actuals = await budgetTable
+                            .Where(budgetItem => budgetItem.EntityType == "Actual" && budgetItem.Category1 == category)
+                            .ToEnumerableAsync();
+                    }
+                    else
+                    {
+                        items = await budgetTable
+                            .Where(budgetItem => budgetItem.EntityType == "Budget")
+                            .OrderBy(BudgetItem => BudgetItem.Account)
+                            .ToEnumerableAsync();
+                        actuals = await budgetTable
+                            .Where(budgetItem => budgetItem.EntityType == "Actual")
+                            .OrderBy(BudgetItem => BudgetItem.Account)
+                            .ToEnumerableAsync();
+                    }
                     foreach (BudgetItem bi in items)
                     {
                         BudgetItem actual = actuals.FirstOrDefault(x => x.Account == bi.Account);

@@ -42,6 +42,7 @@
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\IPlatform.cs" />
+    <Compile Include="Helpers\ListViewAttachedBehavior.cs" />
     <Compile Include="Models\BudgetCategory.cs" />
     <Compile Include="Models\BudgetCategoryManager.cs" />
     <Compile Include="Models\BudgetItem.cs" />

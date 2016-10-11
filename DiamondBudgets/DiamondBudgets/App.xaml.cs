@@ -22,7 +22,7 @@ namespace DiamondBudgets
             md.BackgroundColor = Constants.DarkPrimaryColor;
             md.Master = new MenuPage(md, userAppSettings);
             md.Detail = new NavigationPage(new BudgetCatagoryList() {master = md}) { BarBackgroundColor = Constants.DarkPrimaryColor };
-            //md.Detail = new NavigationPage(new TransactionsList()) { BarBackgroundColor = Constants.DarkPrimaryColor };
+            //md.Detail = new NavigationPage(new BudgetList() { master = md }) { BarBackgroundColor = Constants.DarkPrimaryColor };
             MainPage = md;
         }
 

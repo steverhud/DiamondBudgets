@@ -11,7 +11,8 @@ namespace DiamondBudgets
         string tenantID;
         string entityType;
         decimal amount;
-        string category;
+        string category1;
+        string category2;
         int budgetYear;
 
         [JsonProperty(PropertyName = "id")]
@@ -42,11 +43,18 @@ namespace DiamondBudgets
             set { amount = value; }
         }
 
-        [JsonProperty(PropertyName = "category")]
-        public string Category
+        [JsonProperty(PropertyName = "Category1")]
+        public string Category1
         {
-            get { return category; }
-            set { category = value; }
+            get { return category1; }
+            set { category1 = value; }
+        }
+
+        [JsonProperty(PropertyName = "Category2")]
+        public string Category2
+        {
+            get { return category2; }
+            set { category2 = value; }
         }
 
         [JsonProperty(PropertyName = "BudgetYear")]

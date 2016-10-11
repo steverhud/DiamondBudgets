@@ -33,9 +33,9 @@
                        x:Name="syncIndicator"/>
     
     <ListView x:Name="categoryList"
-				ItemSelected="OnSelected"
-				IsPullToRefreshEnabled="true" Refreshing="OnRefresh"
-				Grid.Row="0"/>
+              ItemSelected="OnSelected"
+              IsPullToRefreshEnabled="true" Refreshing="OnRefresh"
+              Grid.Row="0"/>
 
   </Grid>
 </ContentPage>
