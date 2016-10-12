@@ -82,12 +82,15 @@ namespace DiamondBudgets
                 {
                     items = await budgetCategoryTable
                         .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category1 == category1)
+                        .OrderBy(ob => ob.Category2)
                         .ToEnumerableAsync();
                 }
                 else
                 {
                     items = await budgetCategoryTable
                         .Where(budgetItem => budgetItem.EntityType == entityType)
+                        .OrderBy(ob => ob.Category1)
+                        .ThenBy(ob => ob.Category2)
                         .ToEnumerableAsync();
                 }
 

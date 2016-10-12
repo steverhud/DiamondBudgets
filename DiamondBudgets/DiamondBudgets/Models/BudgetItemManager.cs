@@ -86,7 +86,7 @@ namespace DiamondBudgets
                         items = await budgetTable
                             .Where(budgetItem => budgetItem.EntityType == entityType && 
                                         budgetItem.Category1 == category1 && budgetItem.Category2 == category2)
-                            .OrderBy(bi => bi.Account)
+                            .OrderBy(bi => bi.Description)
                             .ToEnumerableAsync();
                     }
                     else
@@ -96,7 +96,7 @@ namespace DiamondBudgets
                             items = await budgetTable
                                 .Where(budgetItem => budgetItem.EntityType == entityType && budgetItem.Category1 == category1)
                                 .OrderBy(bi => bi.Category2)
-                                .ThenBy(bi => bi.Account)
+                                .ThenBy(bi => bi.Description)
                                 .ToEnumerableAsync();
                         }
                         else
@@ -105,7 +105,7 @@ namespace DiamondBudgets
                                 .Where(budgetItem => budgetItem.EntityType == entityType)
                                 .OrderBy(bi => bi.Category1)
                                 .ThenBy(bi => bi.Category2)
-                                .ThenBy(bi => bi.Account)
+                                .ThenBy(bi => bi.Description)
                                 .ToEnumerableAsync();
                         }
                     }
