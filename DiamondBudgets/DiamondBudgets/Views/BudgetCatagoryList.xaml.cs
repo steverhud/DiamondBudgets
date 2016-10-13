@@ -78,19 +78,32 @@ namespace DiamondBudgets
                     foreach (BudgetCategory budget in budgets)
                     {
                         decimal newPercentage = Math.Round((budget.Amount / 100), 2);
-                        Color barColor;
+                        //Color barColor;
+                        //if (newPercentage >= (decimal)1.0)
+                        //    barColor = Color.Red;
+                        //else if (newPercentage >= (decimal)0.85)
+                        //    barColor = Color.Yellow;
+                        //else
+                        //    barColor = Color.Green;
+
+                        string barColor;
                         if (newPercentage >= (decimal)1.0)
-                            barColor = Color.Red;
+                            barColor = "RedBar.png";
                         else if (newPercentage >= (decimal)0.85)
-                            barColor = Color.Yellow;
+                            barColor = "YellowBar.png";
                         else
-                            barColor = Color.Green;
+                            barColor = "GreenBar.png";
+
+                        decimal barWidth = Math.Round(Convert.ToDecimal(App.ScreenWidth) * newPercentage, 0);
+
+                        //barWidth = 1000 * newPercentage;
 
                         PercentageBars.Add(new PercentageBarValue
                         {
                             BarLabel = budget.Category1,
                             Percentage = newPercentage,
                             BarColor = barColor,
+                            BarWidth = barWidth,
                         });
                     }
 
@@ -139,15 +152,22 @@ namespace DiamondBudgets
         }
         public async void OnSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as PercentageBarValue;
-            NavigationPage budgetList = new NavigationPage(new Catagory2List() { Category1 = item.BarLabel, master = master }) { BarBackgroundColor = Constants.DarkPrimaryColor};
-            master.Detail = budgetList;
+            try
+            {
+                var item = e.SelectedItem as PercentageBarValue;
+                NavigationPage budgetList = new NavigationPage(new Catagory2List() { Category1 = item.BarLabel, master = master }) { BarBackgroundColor = Constants.DarkPrimaryColor };
+                master.Detail = budgetList;
+            }
+            catch (Exception ex)
+            { await DisplayAlert("Selection Error", "Error occurred during selection: " + ex.Message, "OK"); }
         }
     }
     public class PercentageBarValue
     {
         public string BarLabel { get; set; }
         public decimal Percentage { get; set; }
-        public Color BarColor { get; set;}
+        //public Color BarColor { get; set;}
+        public string BarColor { get; set; }
+        public decimal BarWidth { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace DiamondBudgets
 {
     public class PercentageBar : ViewCell
     {
+        Image myImage = new Image();
         Label barAmount;
         Label barLabel;
         decimal percentage = new decimal();
@@ -52,7 +53,7 @@ namespace DiamondBudgets
 
             Grid myGrid = new Grid
             {
-                //Padding = new Thickness(0, 5, 0, 0),
+                Padding = new Thickness(0, 0, 5, 0),
                 RowDefinitions =
                 {
                     new RowDefinition {Height = new GridLength(10, GridUnitType.Auto) },
@@ -88,12 +89,22 @@ namespace DiamondBudgets
                 VerticalTextAlignment = TextAlignment.Center,
             };
 
+            myImage.Source = "GreenBar.png";
+            myImage.HorizontalOptions = LayoutOptions.Start;
+            myImage.Aspect = Aspect.Fill;
+            myImage.MinimumHeightRequest = 10;
+            //myImage.WidthRequest = App.ScreenWidth * .25;
+
             barLabel.SetBinding(Label.TextProperty, "BarLabel");
             barAmount.SetBinding(Label.TextProperty, "Percentage");
-            innerGrid.SetBinding(StackLayout.BackgroundColorProperty, "BarColor");
+            //innerGrid.SetBinding(StackLayout.BackgroundColorProperty, "BarColor");
+            innerGrid.SetBinding(StackLayout.WidthProperty, "BarWidth");
+            myImage.SetBinding(Image.WidthRequestProperty, "BarWidth");
+            myImage.SetBinding(Image.SourceProperty, "BarColor");
 
             innerGrid.Children.Add(barLabel, 0, 0);
             innerGrid.Children.Add(barAmount, 1, 0);
+            myGrid.Children.Add(myImage, 0, 1);
             myGrid.Children.Add(innerGrid, 0, 1);
 
             //myGrid.GestureRecognizers.Add(panGesture);

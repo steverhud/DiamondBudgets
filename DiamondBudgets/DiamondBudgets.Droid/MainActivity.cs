@@ -19,7 +19,9 @@ namespace DiamondBudgets.Droid
 
             base.OnCreate(bundle);
 
-            App.ScreenWidth = (Resources.DisplayMetrics.WidthPixels + 0.5F);
+            //App.ScreenWidth = (Resources.DisplayMetrics.WidthPixels + 0.5F);
+            //App.ScreenWidth = (Resources.DisplayMetrics.Xdpi * Resources.DisplayMetrics.Density);
+            App.ScreenWidth = Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density;
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
 //            OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();

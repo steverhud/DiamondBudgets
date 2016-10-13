@@ -87,19 +87,31 @@ namespace DiamondBudgets
                         foreach (BudgetCategory2 budget in budgets)
                         {
                             decimal newPercentage = Math.Round((budget.Amount / 100), 2);
-                            Color barColor;
+                            //Color barColor;
+                            //if (newPercentage >= (decimal)1.0)
+                            //    barColor = Color.Red;
+                            //else if (newPercentage >= (decimal)0.85)
+                            //    barColor = Color.Yellow;
+                            //else
+                            //    barColor = Color.Green;
+
+                            string barColor;
                             if (newPercentage >= (decimal)1.0)
-                                barColor = Color.Red;
+                                barColor = "RedBar.png";
                             else if (newPercentage >= (decimal)0.85)
-                                barColor = Color.Yellow;
+                                barColor = "YellowBar.png";
                             else
-                                barColor = Color.Green;
+                                barColor = "GreenBar.png";
+
+                            decimal barWidth = Math.Round(Convert.ToDecimal(App.ScreenWidth) * newPercentage, 0);
 
                             PercentageBars.Add(new PercentageBarValue
                             {
                                 BarLabel = budget.Category2,
                                 Percentage = newPercentage,
+                                //BarColor = barColor,
                                 BarColor = barColor,
+                                BarWidth = barWidth,
                             });
                         }
 
