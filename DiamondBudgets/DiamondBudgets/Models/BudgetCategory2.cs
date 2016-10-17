@@ -66,6 +66,8 @@ namespace DiamondBudgets
 
         [Version]
         public string Version { get; set; }
+        public decimal BudgetAmount { get; set; }
+        public decimal ActualAmount { get; set; }
 
     }
 }

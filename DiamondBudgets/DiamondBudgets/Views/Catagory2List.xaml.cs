@@ -88,6 +88,8 @@ namespace DiamondBudgets
                     {
                         foreach (BudgetCategory2 bc in budgets)
                         {
+                            bc.BudgetAmount = bc.Amount;
+
                             BudgetCategory2 actual = actuals.FirstOrDefault(x => x.Category1 == bc.Category1 && x.Category2 == bc.Category2);
                             if (actual != null)
                             {
@@ -97,6 +99,8 @@ namespace DiamondBudgets
                             }
                             else
                                 bc.Amount = 0;
+
+                            bc.ActualAmount = actual.Amount;
                         }
 
 
@@ -104,19 +108,14 @@ namespace DiamondBudgets
                         foreach (BudgetCategory2 budget in budgets)
                         {
                             decimal newPercentage = Math.Round((budget.Amount / 100), 2);
-                            //Color barColor;
-                            //if (newPercentage >= (decimal)1.0)
-                            //    barColor = Color.Red;
-                            //else if (newPercentage >= (decimal)0.85)
-                            //    barColor = Color.Yellow;
-                            //else
-                            //    barColor = Color.Green;
+
+                            string barText = budget.ActualAmount.ToString("C") + " of " + budget.BudgetAmount.ToString("C");
 
                             string barColor;
                             if (newPercentage >= (decimal)1.0)
                                 barColor = "RedBar.png";
                             else if (newPercentage >= (decimal)0.85)
-                                barColor = "YellowBar1.png";
+                                barColor = "YellowBar.png";
                             else
                                 barColor = "GreenBar.png";
 
@@ -126,9 +125,9 @@ namespace DiamondBudgets
                             {
                                 BarLabel = budget.Category2,
                                 Percentage = newPercentage,
-                                //BarColor = barColor,
                                 BarColor = barColor,
                                 BarWidth = barWidth,
+                                BarText = barText,
                             });
                         }
 

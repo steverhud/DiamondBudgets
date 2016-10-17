@@ -242,13 +242,22 @@
     <AndroidResource Include="Resources\drawable\diamond_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\GreenBar.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\YellowBars.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\YellowBar.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\YellowBar1.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\YellowBar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\YellowBar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\GreenBar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\GreenBar.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\GreenBar.png" />
@@ -257,22 +266,16 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\GreenBar.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\GreenBar.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\RedBar.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\RedBarhdpi.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\RedBar.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\RedBarxhdpi.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\RedBar.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\RedBarxxhdpi.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\RedBarmdpi.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\RedBar.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -63,6 +63,9 @@ namespace DiamondBudgets
                 {
                     foreach (BudgetCategory bc in budgets)
                     {
+
+                        bc.BudgetAmount = bc.Amount;
+
                         BudgetCategory actual = actuals.FirstOrDefault(x => x.Category1 == bc.Category1);
                         if (actual != null)
                         {
@@ -72,6 +75,8 @@ namespace DiamondBudgets
                         }
                         else
                             bc.Amount = 0;
+
+                        bc.ActualAmount = actual.Amount;
                     }
 
                     List<PercentageBarValue> PercentageBars = new List<PercentageBarValue>();
@@ -86,11 +91,13 @@ namespace DiamondBudgets
                         //else
                         //    barColor = Color.Green;
 
+                        string barText = budget.ActualAmount.ToString("C") + " of " + budget.BudgetAmount.ToString("C");
+
                         string barColor;
                         if (newPercentage >= (decimal)1.0)
                             barColor = "RedBar.png";
                         else if (newPercentage >= (decimal)0.85)
-                            barColor = "YellowBar1.png";
+                            barColor = "YellowBar.png";
                         else
                             barColor = "GreenBar.png";
 
@@ -104,6 +111,7 @@ namespace DiamondBudgets
                             Percentage = newPercentage,
                             BarColor = barColor,
                             BarWidth = barWidth,
+                            BarText = barText,
                         });
                     }
 
@@ -171,5 +179,6 @@ namespace DiamondBudgets
         //public Color BarColor { get; set;}
         public string BarColor { get; set; }
         public decimal BarWidth { get; set; }
+        public string BarText { get; set; }
     }
 }
