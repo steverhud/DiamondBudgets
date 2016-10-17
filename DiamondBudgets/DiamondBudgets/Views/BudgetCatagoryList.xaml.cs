@@ -90,7 +90,7 @@ namespace DiamondBudgets
                         if (newPercentage >= (decimal)1.0)
                             barColor = "RedBar.png";
                         else if (newPercentage >= (decimal)0.85)
-                            barColor = "YellowBar.png";
+                            barColor = "YellowBar1.png";
                         else
                             barColor = "GreenBar.png";
 
@@ -108,7 +108,8 @@ namespace DiamondBudgets
                     }
 
                     DataTemplate dt = new DataTemplate(typeof(PercentageBar));
-                    categoryList.ItemsSource = new ObservableCollection<PercentageBarValue>(PercentageBars);
+                    var sortedList = new ObservableCollection<PercentageBarValue>(PercentageBars).OrderByDescending(x => x.Percentage);
+                    categoryList.ItemsSource = sortedList;
                     categoryList.ItemTemplate = dt;
                     categoryList.SeparatorVisibility = SeparatorVisibility.None;
                 }
@@ -156,6 +157,7 @@ namespace DiamondBudgets
             {
                 var item = e.SelectedItem as PercentageBarValue;
                 NavigationPage budgetList = new NavigationPage(new Catagory2List() { Category1 = item.BarLabel, master = master }) { BarBackgroundColor = Constants.DarkPrimaryColor };
+                //Navigation.PushAsync(new Catagory2List() { Category1 = item.BarLabel, master = master }).Wait();
                 master.Detail = budgetList;
             }
             catch (Exception ex)

@@ -2213,17 +2213,32 @@ namespace DiamondBudgets.Droid
 			// aapt resource value: 0x7f0200a2
 			public const int mr_ic_play_light = 2130837666;
 			
-			// aapt resource value: 0x7f0200a6
-			public const int notification_template_icon_bg = 2130837670;
+			// aapt resource value: 0x7f0200ab
+			public const int notification_template_icon_bg = 2130837675;
 			
 			// aapt resource value: 0x7f0200a3
 			public const int RedBar = 2130837667;
 			
 			// aapt resource value: 0x7f0200a4
-			public const int Splash_Screen = 2130837668;
+			public const int RedBarhdpi = 2130837668;
 			
 			// aapt resource value: 0x7f0200a5
-			public const int YellowBar = 2130837669;
+			public const int RedBarmdpi = 2130837669;
+			
+			// aapt resource value: 0x7f0200a6
+			public const int RedBarxhdpi = 2130837670;
+			
+			// aapt resource value: 0x7f0200a7
+			public const int RedBarxxhdpi = 2130837671;
+			
+			// aapt resource value: 0x7f0200a8
+			public const int Splash_Screen = 2130837672;
+			
+			// aapt resource value: 0x7f0200a9
+			public const int YellowBar = 2130837673;
+			
+			// aapt resource value: 0x7f0200aa
+			public const int YellowBar1 = 2130837674;
 			
 			static Drawable()
 			{

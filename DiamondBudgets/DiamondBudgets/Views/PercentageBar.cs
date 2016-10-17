@@ -53,18 +53,20 @@ namespace DiamondBudgets
 
             Grid myGrid = new Grid
             {
-                Padding = new Thickness(0, 0, 5, 0),
+                Padding = new Thickness(5, 0, 5, 0),
                 RowDefinitions =
                 {
-                    new RowDefinition {Height = new GridLength(10, GridUnitType.Auto) },
-                    new RowDefinition {Height = new GridLength(10, GridUnitType.Star) },
+                    new RowDefinition {Height = new GridLength(15, GridUnitType.Auto) },
+                    new RowDefinition {Height = new GridLength(10, GridUnitType.Absolute) },
+                    //new RowDefinition {Height = new GridLength(35, GridUnitType.Star) },
                 },
-
+                Margin = 5,
                 HorizontalOptions = LayoutOptions.Fill,
             };
 
             Grid innerGrid = new Grid
             {
+                Padding = new Thickness(0, 0, 0, -5),
                 ColumnDefinitions =
                 {
                     new ColumnDefinition {Width = new GridLength(App.ScreenWidth * .75, GridUnitType.Star) },
@@ -78,7 +80,7 @@ namespace DiamondBudgets
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = Color.Black,
                 HorizontalTextAlignment = TextAlignment.Start,
-                VerticalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.End,
             };
 
             barAmount = new Label()
@@ -86,26 +88,27 @@ namespace DiamondBudgets
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 TextColor = Color.Black,
                 HorizontalTextAlignment = TextAlignment.End,
-                VerticalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.End,
             };
 
             myImage.Source = "GreenBar.png";
             myImage.HorizontalOptions = LayoutOptions.Start;
+            myImage.VerticalOptions = LayoutOptions.Start;
             myImage.Aspect = Aspect.Fill;
-            myImage.MinimumHeightRequest = 10;
+            myImage.MinimumHeightRequest = 7;
             //myImage.WidthRequest = App.ScreenWidth * .25;
 
             barLabel.SetBinding(Label.TextProperty, "BarLabel");
             barAmount.SetBinding(Label.TextProperty, "Percentage");
             //innerGrid.SetBinding(StackLayout.BackgroundColorProperty, "BarColor");
-            innerGrid.SetBinding(StackLayout.WidthProperty, "BarWidth");
+            //innerGrid.SetBinding(StackLayout.WidthProperty, "BarWidth");
             myImage.SetBinding(Image.WidthRequestProperty, "BarWidth");
             myImage.SetBinding(Image.SourceProperty, "BarColor");
 
             innerGrid.Children.Add(barLabel, 0, 0);
             innerGrid.Children.Add(barAmount, 1, 0);
+            myGrid.Children.Add(innerGrid, 0, 0);
             myGrid.Children.Add(myImage, 0, 1);
-            myGrid.Children.Add(innerGrid, 0, 1);
 
             //myGrid.GestureRecognizers.Add(panGesture);
             //barLabel.GestureRecognizers.Add(tapGesture);

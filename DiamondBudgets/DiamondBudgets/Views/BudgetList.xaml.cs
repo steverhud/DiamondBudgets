@@ -34,9 +34,9 @@ namespace DiamondBudgets
             {
                 string pageTitle;
                 if (category2 != "" && category2 != null)
-                    pageTitle = "Budget List - " + category2;
+                    pageTitle = category2;
                 else if (category1 != "" && category1 != null)
-                    pageTitle = "Budget List - " + category1;
+                    pageTitle = category1;
                 else
                     pageTitle = "Budget List";
 
@@ -127,7 +127,7 @@ namespace DiamondBudgets
                     }
 
                     DataTemplate dt = new DataTemplate(typeof(BudgetCell));
-                    budgetList.ItemsSource = newBudgetList;
+                    budgetList.ItemsSource = newBudgetList.OrderBy(x => x.Description);
                     budgetList.ItemTemplate = dt;
                 }
             }

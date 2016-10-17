@@ -22,6 +22,21 @@ namespace DiamondBudgets
             set { category1 = value; }
         }
 
+        public static string PageTitle
+        {
+            get
+            {
+                string pageTitle;
+                if (category1 != "" && category1 != null)
+                    pageTitle = category1;
+                else
+                    pageTitle = "Budget - By Sub Department";
+
+                return pageTitle;
+            }
+
+        }
+
         public Catagory2List()
         {
             InitializeComponent();
@@ -64,6 +79,8 @@ namespace DiamondBudgets
 
                 using (var scope = new ActivityIndicatorScope(syncIndicator, showActivityIndicator))
                 {
+                    this.Title = PageTitle;
+
                     IEnumerable<BudgetCategory2> budgets = await manager.GetBudgeCategorysAsync(entityType: "Budget", category1: category1);
                     IEnumerable<BudgetCategory2> actuals = await manager.GetBudgeCategorysAsync(entityType: "Actual", category1: category1);
 
@@ -99,7 +116,7 @@ namespace DiamondBudgets
                             if (newPercentage >= (decimal)1.0)
                                 barColor = "RedBar.png";
                             else if (newPercentage >= (decimal)0.85)
-                                barColor = "YellowBar.png";
+                                barColor = "YellowBar1.png";
                             else
                                 barColor = "GreenBar.png";
 
@@ -118,7 +135,7 @@ namespace DiamondBudgets
                         PercentageBars.OrderByDescending(pb => pb.Percentage);
 
                         DataTemplate dt = new DataTemplate(typeof(PercentageBar));
-                        category2List.ItemsSource = new ObservableCollection<PercentageBarValue>(PercentageBars);
+                        category2List.ItemsSource = new ObservableCollection<PercentageBarValue>(PercentageBars).OrderByDescending(x => x.Percentage);
                         category2List.ItemTemplate = dt;
                         category2List.SeparatorVisibility = SeparatorVisibility.None;
                     }
